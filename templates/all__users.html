@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+FitBuddy | Dashboard
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-head">
+
+
+    <div>
+
+        <p class="eyebrow">
+            LOCAL ADMIN DASHBOARD
+        </p>
+
+
+        <h1>
+            All Users
+        </h1>
+
+
+        <p class="subtitle">
+
+            Review saved profiles
+            and original/updated plans.
+
+        </p>
+
+    </div>
+
+
+    <a
+        class="btn secondary"
+        href="/"
+    >
+        Back to Generator
+    </a>
+
+
+</div>
+
+
+{% if not users %}
+
+
+<div class="card empty">
+
+    <h2>
+        No users yet
+    </h2>
+
+
+    <p>
+        Create a plan from the
+        home page and it will
+        appear here.
+    </p>
+
+</div>
+
+
+{% else %}
+
+
+<div class="table-wrap card">
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+    <th>
+        User
+    </th>
+
+    <th>
+        Profile
+    </th>
+
+    <th>
+        Goal
+    </th>
+
+    <th>
+        Original Plan
+    </th>
+
+    <th>
+        Updated Plan
+    </th>
+
+    <th>
+        Action
+    </th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+{% for user in users %}
+
+
+<tr>
+
+
+<td>
+
+<strong>
+    {{ user.username }}
+</strong>
+
+<br>
+
+<span class="muted">
+    {{ user.user_id }}
+</span>
+
+</td>
+
+
+<td>
+
+{{ user.age }} yrs
+
+<br>
+
+{{ user.weight }} kg
+
+<br>
+
+{{ user.intensity|title }}
+
+</td>
+
+
+<td>
+
+{{ user.goal|title }}
+
+</td>
+
+
+<td>
+
+
+<details>
+
+<summary>
+    View
+</summary>
+
+
+<pre class="mini-plan">
+{{ user.original_plan }}
+</pre>
+
+
+</details>
+
+
+</td>
+
+
+<td>
+
+
+{% if user.updated_plan %}
+
+
+<details>
+
+<summary>
+    View
+</summary>
+
+
+<pre class="mini-plan">
+{{ user.updated_plan }}
+</pre>
+
+
+</details>
+
+
+{% else %}
+
+
+<span class="muted">
+    Not updated
+</span>
+
+
+{% endif %}
+
+
+</td>
+
+
+<td>
+
+
+<a
+    class="text-link"
+    href="/user/{{ user.user_id }}"
+>
+    Open
+</a>
+
+
+<form
+    action="/admin/users/{{ user.user_id }}/delete"
+    method="post"
+    onsubmit="return confirm('Delete this local user record?');"
+>
+
+
+<button
+    class="danger-link"
+    type="submit"
+>
+    Delete
+</button>
+
+
+</form>
+
+
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}
